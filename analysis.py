@@ -32,8 +32,11 @@ Ex:
     
     
     # collision analysis
+    num_buckets_range = range(1, NUM_BUCKETS+1)
+    print num_buckets_range
     num_collisions = np.zeros(NUM_BUCKETS+1, dtype=int)
-    for num_buckets in range(1, NUM_BUCKETS+1):
+    
+    for num_buckets in num_buckets_range:
         count_a = fu.count_sort(a, num_buckets)
         print "Count_sorted a, NUM_BUCKETS=%r:" % num_buckets
         print count_a
@@ -69,9 +72,38 @@ Ex:
     
     
     
-#    PLOTTING
+#    plotting collision graph
+    fig_collis = plt.figure()
+    ax_collis = fig_collis.add_subplot(111)
+    ax_collis.plot(num_buckets_range, num_collisions[1:],
+                        label='collisions')
+    collis_title = """
+Collision analysis of Counting Sort, N=%r, 
+array values in [0, NUM_BUCKETS=%r) """ % (N, NUM_BUCKETS)
+    ax_collis.set_title(collis_title)
+    ax_collis.set_xlabel('# of buckets')
+    ax_collis.set_ylabel('# of incorrectly sorted elements')
+    ax_collis.set_ylim([0, N])
+    ax_collis.legend()
     
-
+    
+#    plotting time(N) graph
+    fig_time = plt.figure()
+    ax_time = fig_time.add_subplot(111)
+    ax_time.plot(len_array_range, time_count_sort_list,
+                    label='time', marker='o')
+    time_title = """
+Time of Counting Sort depending on length of array N"""
+    ax_time.set_title(time_title)
+    ax_time.set_xlabel('N')
+    ax_time.set_ylabel('Time of Counting Sort, sec')
+#    ax_time.set_ylim([0, max(time_count_sort_list)*1.2])
+    ax_time.legend(loc=2)
+    
+    
+#    plt.show()
+    fig_collis.savefig("collis_%r_%r_%r.png" % (N, NUM_BUCKETS, NUM_ITERS))
+    fig_time.savefig("time_%r_%r_%r.png" % (N, NUM_BUCKETS, NUM_ITERS))
 
 
 
